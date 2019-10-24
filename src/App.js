@@ -1,27 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import TodoList from './TodoList';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        Welcome, Hello World!
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      items: [],
+      currentItem: {text: '', key: ''},
+    }
+  }
+
+  addItem = e => {
+    e.preventDefault()
+    const newItem = this.state.currentItem
+    if(newItem.text !== '') {
+      console.log(newItem)
+      const items = [...this.state.items, newItem]
+      this.setState({
+        items: items,
+        currentItem: { tex: '', key: ''},
+      })
+    }
+  }
+
+  deleteItem = key => {
+    const filteredItems = this.state.items.filter(item => {
+      return item.key !== key
+    })
+    this.setState({
+      items: filteredItems,
+    })
+  }
+
+  render() { 
+    return (
+      <div className="App">
+          <TodoList 
+            addItem={this.addItem} 
+            inputElement={this.inputElement}
+            handleInput={this.handleInput}
+            currentItem={this.state.currentItem}
+          />
+
+      </div>
+    );
+  }
 }
 
 export default App;
